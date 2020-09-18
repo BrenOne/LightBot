@@ -12,12 +12,6 @@ C_TOKEN_ME = "8694df0df2f331c0bfddbf73425f40000000000000000b6004658d13c74844f56d
 vk_me = vk_api.VkApi(token=C_TOKEN_ME)
 longpoll = VkBotLongPoll(vk_me, C_VK)
 upload = vk_api.VkUpload(vk_me)
-writer = ""
-rob1 = 396886945
-rob2 = 35184757
-nikita = 237472667
-nikita1 = 590952346
-rob = [rob2, rob1]
 keyboard1 = VkKeyboard(one_time=False)
 def send_msg(peer_id, textsend):
     vk_me.method('messages.send',
@@ -28,12 +22,18 @@ while True:
     try:
         try:
             for event in longpoll.listen():
+
                 from_id = event.obj.peer_id
-                if from_id in rob:
-                    if event.type == VkBotEventType.MESSAGE_NEW:
-                        if event.user_id in rob:
+                if event.type == VkBotEventType.MESSAGE_NEW:
+                    if len(event.message) > 32:
+                        send_msg(peer_id, "ti tupoi? write menshe than 32 chars! And po english pls or idi nahuy")
+                    else:
+                        try:
+                            send_msg(peer_id, "LCD wrote!")
                             display.lcd_display_string(event.message[:16], 1)
                             display.lcd_display_string(event.message[16:], 2)
+                        except Exception as ex:
+                            print('PYTHON_EROR: ' + str(ex))
         except ApiError as ex:
             print('VK_EROR: ' + str(ex))
     except Exception as ex:
